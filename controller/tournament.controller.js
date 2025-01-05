@@ -15,7 +15,7 @@ export const createTournamentReq = async (req, response, next) => {
 
 export const tournamentList = async (req, response, next) => {
   try {
-    const view = await Tournament.find().populate("user_Id");
+    const view = await Tournament.find().populate("organizerId");
 
     if (!view) {
       return response.status(501).json({ msg: "No tournaments found" });
@@ -29,7 +29,7 @@ export const tournamentList = async (req, response, next) => {
 export const tournamentById = async (req, response, next) => {
   let { id } = req.params;
   try {
-    const view = await Tournament.findById({ _id: id }).populate("user_Id").populate("schedule.matchId");
+    const view = await Tournament.findById({ _id: id }).populate("organizerId").populate("schedule.matchId");
 
     if (view) {
       return response.status(201).json({ msg: "Tournaments found", view });
@@ -56,13 +56,9 @@ export const updateTornament = async (req, response, next) => {
   let tournamentId = req.params.id;
   let { matchId } = req.body;
   try {
-    console.log(tournamentId);
-    console.log(matchId);  //{userId,cartItems:[{productId}]}
     let tourna = await Tournament.findOne({ _id: tournamentId });
-    console.log("find tourna " + tourna);
     if (tourna) {
       let status = tourna.schedule.some((matchT) => { return matchT.matchId == matchId });
-      console.log("status " + status);
       if (status) {
         return response.status(201).json({ msg: "match is already scheduled." });
       }
@@ -74,7 +70,6 @@ export const updateTornament = async (req, response, next) => {
       return response.status(401).json({ error: "no tournament with reference to this ID!" })
     }
   }
-
   catch (err) {
     return response.status(501).json({ error: "tournament not updated!", err });
   }
