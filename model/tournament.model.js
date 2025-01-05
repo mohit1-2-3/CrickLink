@@ -53,6 +53,6 @@ const tournamentSchema  = new mongoose.Schema({
   });
   
   
-  export default const Tournament = model('Tournament', TournamentSchema);
+  export const Tournament = mongoose.model('Tournament', tournamentSchema);
   
   
