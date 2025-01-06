@@ -10,10 +10,14 @@ mongoose.connect("mongodb://localhost:27017/cricklink")
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({extended: true}));
 
+  app.get("/",(req,res)=>{
+    // console.log("hey")
+    res.end("Done")
+  })
   app.use("/user",UserRouter);
   app.use("/Team",TeamRouter);
 
-  app.listen(3000,()=>{
+  app.listen(3001,()=>{
     console.log("Server Started....");
   });
 

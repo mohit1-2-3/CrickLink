@@ -6,7 +6,9 @@ import jwt from "jsonwebtoken";
 //---------------------user signUP----------------------------
 export const signUp = async (request,response,next)=>{
     try{  
+    
      const errors =  validationResult(request);
+     console.log(errors);
      if(!errors.isEmpty()){
         console.log(errors);
        return response.status(401).json({error:"Bad request"});
@@ -14,7 +16,8 @@ export const signUp = async (request,response,next)=>{
      let saltKey = bcrypt.genSaltSync(10);
      let encryptedPassword = bcrypt.hashSync(request.body.password,saltKey);
      request.body.password = encryptedPassword;
-     
+     console.log("===============================");
+     console.log(request.body);
      let user = await User.create(request.body);  
      return response.status(201).json({message: "Sign up success",user});
     }
