@@ -1,8 +1,8 @@
-import { Tournament } from "../model/tournament.model.js";
+import Tournament  from "../model/tournament.model.js";
 import { response } from "express";
 import { User } from "../model/user.model.js";
 import { Match } from "../model/match.model.js";
-import { Team } from "../model/team.model.js";
+import Team  from "../model/Team.model.js";
 
 export const createTournamentReq = async (req, response, next) => {
   try {
