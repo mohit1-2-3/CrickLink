@@ -1,5 +1,5 @@
 import { validationResult } from "express-validator"
-import { Team } from "../model/Team.model.js";
+import Team from "../model/team.model";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -17,3 +17,4 @@ export const createTeam= async (req, res) => {
 };
 
 
+//==============================================
