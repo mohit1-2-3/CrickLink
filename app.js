@@ -12,21 +12,16 @@ mongoose.connect("mongodb://localhost:27017/cricklink")
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({extended: true}));
 
-  app.get("/",(req,res)=>{
-    // console.log("hey")
-    res.end("Done")
-  })
+  // app.get("/",(req,res)=>{
+  //   // console.log("hey")
+  //   res.end("Done")
+  // })
   app.use("/user",UserRouter);
   app.use("/Team",TeamRouter);
   app.use("/match",MatchRouter)
 app.use("/player",PlayerRouter);
 
-<<<<<<< HEAD
   app.listen(3001,()=>{
-=======
-
-  app.listen(3100,()=>{
->>>>>>> origin/master
     console.log("Server Started....");
   });
 
