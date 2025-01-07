@@ -13,6 +13,7 @@ const teamSchema = new mongoose.Schema({
    { type: Number, default: 0 }, 
   losses: 
   { type: Number, default: 0 }, 
-});
+});       
 
-export const Team = mongoose.model("Team",teamSchema );
+const Team = mongoose.model("Team", teamSchema );
+export default Team;
