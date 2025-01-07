@@ -6,7 +6,7 @@ import TeamRouter from "./routes/Team.route.js";
 import PlayerRouter from "./routes/player.route.js";
 import MatchRouter from "./routes/match.route.js";
 const app = express();
-mongoose.connect("mongodb://localhost:27017/cricklink")
+mongoose.connect("mongodb://127.0.0.1:27017/Cricklink")
 .then(()=>{
   console.log("Database connected...");
   app.use(bodyParser.json());
