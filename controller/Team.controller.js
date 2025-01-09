@@ -2,6 +2,9 @@ import { request, response } from "express";
 import Team  from "../model/Team.model.js";
 import { User } from "../model/user.model.js";
 
+import { validationResult } from "express-validator"
+import bcrypt from "bcryptjs";
+
 // --------------create tem--------------------
 export const createTeam = async (request, response, next) => {
     try {
@@ -37,8 +40,8 @@ export const viewTeam = async (request, response, next) => {
 // -----------------------------view team with id--------------------------
 export const getTeam = async (request, response, next) => {
     try {
-        let id = request.params.id
-        const result = await Team.findOne({ id });
+        let teamId = request.params.teamId;
+        const result = await Team.findOne({ _id: teamId });
         console.log(result);
         if (result) {
             return response.status(200).json({ Team: result });

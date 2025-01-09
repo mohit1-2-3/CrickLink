@@ -8,15 +8,15 @@ const matchSchema = new mongoose.Schema({
     },
     tournamentId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "tournament"
+        ref: "Tournament"
     },
     team1: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "team"
+        ref: "Team"
     },
     team2: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "team"
+        ref: "Team"
     },
     date: {
         type: Date,
@@ -28,12 +28,12 @@ const matchSchema = new mongoose.Schema({
         trim: true,
     },
     result: {
-        winner: {
+        winnerId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "team",
+            ref: "Team",
         },
         score: {
-            type: String,
+            type: Number,
             trim: true,
         }
     }

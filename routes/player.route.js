@@ -4,4 +4,5 @@ const router = express.Router();
 
 router.get("/withoutTeam",withoutTeam);
 
+
 export default router;

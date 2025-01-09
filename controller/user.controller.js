@@ -2,6 +2,7 @@ import { validationResult } from "express-validator"
 import { User } from "../model/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { uploadProfilePhoto } from "../config/multerSetup.js";
 
 //---------------------user signUP----------------------------
 export const signUp = async (request,response,next)=>{
@@ -55,8 +56,9 @@ export const signUp = async (request,response,next)=>{
 
    export const updateProfile = async (req, res) => {
     const { userId } = req.params;
-    const { skills, experience, location, profile_photo } = req.body;
-  
+    const { skills, experience, location} = req.body;
+    const profilePhotoUrl = req.file ? `http://localhost:3001/uploads/${req.file.filename}` : null;
+    
     try {
       const user = await User.findByIdAndUpdate(
         userId,
@@ -64,7 +66,7 @@ export const signUp = async (request,response,next)=>{
           "profile.skills": skills,
           "profile.experience": experience,
           "profile.location": location,
-          profile_photo: profile_photo,
+          "profile_photo": profilePhotoUrl,
         },
         { new: true }
       );
@@ -90,7 +92,7 @@ export const signUp = async (request,response,next)=>{
       
       const user = await User.findById(userId, "name role profile");
       const user1 = await User.findById("67705cf1ba1ce25d26651ab7");
-console.log(user1);
+        console.log(user1);
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
@@ -110,3 +112,18 @@ console.log(user1);
       res.status(500).json({ error: "Internal server error" });
     }
   };
+
+  export const allPlayer = (request,response,next)=>{
+    User.find({role:"player"})
+    .then(result=>{
+        return response.status(200).json({user: result});
+    }).catch((err)=>{
+      console.log(err)
+        return response.status(500).json({error: "Internal Server Error"});
+    });
+  }
+  
+//---------------------------------------Forget Password--------------------------
+  export const forgetPassword = async (req, res, next)=>{
+
+  }

@@ -6,21 +6,22 @@ const tournamentSchema = new mongoose.Schema({
   },
   organizerId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'user',
     required: true,
   },
   teams: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Team',
-    },
+      teamId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Team'
+      }
+    }
   ],
   schedule: [
     {
       matchId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Match',
-        required: true,
       },
     }
   ],
@@ -34,7 +35,8 @@ const tournamentSchema = new mongoose.Schema({
   },
 });
 
+const Tournament = mongoose.model('Tournament', tournamentSchema);
 
- const Tournament = mongoose.model('Tournament', tournamentSchema);
+export default Tournament;
 
- export default Tournament;
+
