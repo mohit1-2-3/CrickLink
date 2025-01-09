@@ -1,9 +1,10 @@
-import { request, response } from "express";
-import Team  from "../model/Team.model.js";
-import { User } from "../model/user.model.js";
-
 import { validationResult } from "express-validator"
+
+import {Team} from "../model/Team.model.js";
+import{ User }from "../model/user.model.js";
+import { request, response } from "express";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 // --------------create tem--------------------
 export const createTeam = async (request, response, next) => {
