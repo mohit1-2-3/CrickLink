@@ -1,20 +1,20 @@
-import Tournament  from "../model/tournament.model.js";
+import Tournament from "../model/tournament.model.js";
 import { response } from "express";
 import { User } from "../model/user.model.js";
 import { Match } from "../model/match.model.js";
-import Team  from "../model/Team.model.js";
+import Team from "../model/Team.model.js";
 
 
 // -----------------------------Create Tournament--------------------------
 
 export const createTournamentReq = async (req, response, next) => {
   try {
-    let {organizerId} = req.body;
-    const organizer = await User.findOne({_id: organizerId});
-    if(organizer.role == "organizer"){
-    const insert = await Tournament.create(req.body);
-    return response.status(201).json({ msg: " tournament created : ", insert });
-    }else
+    let { organizerId } = req.body;
+    const organizer = await User.findOne({ _id: organizerId });
+    if (organizer.role == "organizer") {
+      const insert = await Tournament.create(req.body);
+      return response.status(201).json({ msg: " tournament created : ", insert });
+    } else
       return response.status(401).json({ restricted: " Sorry : Only organizer can organize tournament " });
   } catch (err) {
     return response.status(501).json({ msg: " internal server error", err });
@@ -26,14 +26,14 @@ export const createTournamentReq = async (req, response, next) => {
 export const tournamentList = async (req, response, next) => {
   try {
     const view = await Tournament.find()
-    .populate("organizerId", "name")
-    .populate("teams.teamId", "teamName");
+      .populate("organizerId", "name")
+      .populate("teams.teamId", "teamName");
     if (!view) {
       return response.status(501).json({ msg: "No tournament found" });
     }
     return response.status(201).json({ msg: "Tournament list: ", view });
   } catch (err) {
-    return response.status(501).json({ msg: "Internal server error",err });
+    return response.status(501).json({ msg: "Internal server error", err });
   }
 };
 
@@ -44,8 +44,8 @@ export const tournamentById = async (req, response, next) => {
   let { id } = req.params;
   try {
     const view = await Tournament.findById({ _id: id })
-    .populate("organizerId", "name")
-    .populate("teams.teamId", "teamName")
+      .populate("organizerId", "name")
+      .populate("teams.teamId", "teamName")
     if (view) {
       return response.status(201).json({ msg: "Tournaments found", view });
     }
@@ -95,37 +95,31 @@ export const updateTornamentSchedule = async (req, response, next) => {
   }
 }
 
-export const addTeam = async (req, response, next)=>{   // input must required team name & captain email id
-                                                        // if 2 teams have same name, then use captain_id
+
+// -----------------------------Add Team To Tournament--------------------------
+
+export const addTeam = async (req, response, next) => {
   let tId = req.params.id;
-  let {team_name, captainEmail} = req.body;
-  try{
-    console.log("tId " + tId)
-    const tournament = await Tournament.findOne({_id: tId});
-    console.log("tournament : "+ tournament);
-    const captain = await User.findOne({email: captainEmail});
-    console.log("captain : "+captain)
-    if(captain){
+  let { team_name, captainEmail } = req.body;
+  try {
+    const tournament = await Tournament.findOne({ _id: tId });
+    const captain = await User.findOne({ email: captainEmail });
+    if (captain) {
       let id = captain.id;
-      console.log("ID : "+ id)
-      console.log("see : "+ team_name +" "+id)
-      const team = await Team.findOne({teamName: team_name, captainId : id});
+      const team = await Team.findOne({ teamName: team_name, captainId: id });
       let teamId = team.id;
-      console.log("team "+ team);
-      if(team){
-        console.log("teamId : "+ teamId);
-        const registering = tournament.teams.some((team)=>{return team.teamId===teamId});
-        console.log("team already register : "+ registering)
-        if(registering){
+      if (team) {
+        const registering = tournament.teams.some((team) => { return team.teamId === teamId });
+        if (registering) {
           return response.status(201).json("Team is already registered!");
-      }
+        }
         tournament.teams.push({ teamId });
-      await tournament.save();
+        await tournament.save();
         return response.status(201).json("team registered.");
       }
     }
-  }catch(err){
-    return response.status(501).json({error: "internal server error", err });
+  } catch (err) {
+    return response.status(501).json({ error: "internal server error" });
   }
 
 }
