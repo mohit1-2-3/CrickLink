@@ -1,12 +1,12 @@
 
 
 
-
 //==============================================
 
 import { request, response } from "express";
 import {Team }from "../model/Team.model.js";
 import{ User }from "../model/user.model.js";
+import mongoose from "mongoose";
 
 // --------------create tem--------------------
 export const createTeam= async (request,response,next)=>{
@@ -79,3 +79,91 @@ export const getTeam= async (request,response,next)=>{
     }
  }
 
+
+
+
+ //---request by player to team----
+ export const addtoTeamReq = async (req, res, next) => {
+    try {
+      const { playerId, teamId } = req.body;
+  
+      if (!playerId || !teamId) {
+        return res.status(400).json({ message: "Player ID and Team ID are required" });
+      }
+  
+      if (!mongoose.Types.ObjectId.isValid(playerId) || !mongoose.Types.ObjectId.isValid(teamId)) {
+        return res.status(400).json({ message: "Invalid ObjectId format" });
+      }
+  
+   
+      const team = await Team.findById(teamId);
+      if (!team) {
+        return res.status(404).json({ message: "Team not found" });
+      }
+  
+      const player = await User.findById(playerId);
+      if (!player) {
+        return res.status(404).json({ message: "Player not found" });
+      }
+  
+      const notification = {
+        type: "request",
+        message: `Your request to join the team ${team.teamName} is pending.`,
+        status: "pending",
+      };
+  
+      player.notifications.push(notification);
+      await player.save();
+  
+      return res.status(200).json({
+        message: `Player's request to join the team ${team.teamName} is pending.`,
+        team,
+        player,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Server error", error });
+    }
+  };
+  
+
+
+
+
+
+//----------request handle by team(captain)
+
+
+
+export const reqacceptBYCaptin = async (req, res, next) => {
+    try {
+      const { status, playerId, teamId} = req.body;
+  
+      const player = await User.findById(playerId);
+      const team = await Team.findById(teamId);
+      if (!player) {
+        return res.status(404).json({ message: "Player not found" });
+      }
+  
+      if (!team) {
+        return res.status(404).json({ message: "Team not found" });
+      }
+  
+  
+      const pendingNotification = player.notifications.find( (notif) => notif.status === "pending");
+  
+      pendingNotification.status = status;
+      pendingNotification.message = `Player's request to join the team is ${status}`;
+       
+      await player.save();
+  
+      team.players.push(playerId);
+      await team.save();
+  
+      return res.status(201).json({message : "player Added Successfully In Team"})
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Server error", error });
+    }
+  };
+  
