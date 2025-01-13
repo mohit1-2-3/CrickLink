@@ -1,5 +1,5 @@
 import express from "express";
-import { signUp, signIn, updateProfile, viewProfile, allPlayer, forgetPassword } from "../controller/user.controller.js";
+import { signUp, signIn, updateProfile, viewProfile, allPlayer, forgetPassword,sendOTPController,updatePasswordWithOTP} from "../controller/user.controller.js";
 import { body } from "express-validator";
 import { uploadProfilePhoto } from "../config/multerSetup.js";
 
@@ -18,7 +18,7 @@ router.put("/updateProfile/:userId", uploadProfilePhoto, updateProfile);
 router.get("/profile/:userId", viewProfile);
 router.get("/playerList", allPlayer);
 router.get("/forgetPassword", forgetPassword);
-
-
+router.post("/sendOTP", sendOTPController)
+router.post("/updatePassword", updatePasswordWithOTP)
 
 export default router;
