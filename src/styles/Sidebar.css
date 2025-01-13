@@ -1,0 +1,136 @@
+/*.sidebar {
+  width: 250px;
+  background-color: #5a6266; 
+  padding: 20px;
+  position: fixed;
+  top: 70px;
+  left: 0;
+  height: calc(100vh - 70px); 
+  border-right: 2px solid #ddd;
+}
+
+.sidebar ul {
+  margin-top: 10px;
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 15px 0;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: blue;
+  font-size: 18px;
+}
+
+.sidebar ul li a:hover {
+  color: black;
+}
+*/
+
+
+
+
+ /* Sidebar Styles */
+/*.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px;  
+  width: 250px;
+  height: 100%;
+  background-color: #2c3e50;
+  color: white;
+  transition: left 0.3s ease;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.sidebar.open {
+  left: 0;  
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 20px;
+}
+
+.sidebar ul li {
+  margin: 15px 0;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+  text-decoration: underline;
+}
+
+.hamburger-menu {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  font-size: 24px;
+  background: none;
+  border: none;
+  color: #2c3e50;
+  cursor: pointer;
+}
+
+.hamburger-menu:focus {
+  outline: black;
+}*/
+
+
+
+
+
+/* Sidebar Styles */
+.sidebar {
+  position: fixed;  
+  top: 70px; 
+  left: 0;  
+  width: 200px;  
+  height: calc(100vh - 70px);  
+  background-color: #2c3e50; 
+  color: white; 
+  display: flex;
+  flex-direction: column;  
+  padding-top: 20px;  
+  z-index: 999;  
+}
+
+.sidebar ul {
+  list-style: none; 
+  padding: 0; 
+}
+
+.sidebar li {
+  margin: 20px 0;  
+}
+
+.sidebar li a {
+  color: white;  
+  text-decoration: none;  
+  font-size: 18px;  
+  padding: 10px;
+  display: block; 
+  transition: background-color 0.3s ease;
+}
+
+.sidebar li a:hover {
+  color: green;  
+  background-color: #34495e;  
+}
+
+.sidebar li a.active {
+  color: green;  
+  background-color: #34495e;  
+}
+
+
+ 
+
+
