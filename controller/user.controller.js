@@ -161,7 +161,7 @@ export const updatePasswordWithOTP = async (request, response) => {
       
       const user = await User.findById(userId, "name role profile");
       const user1 = await User.findById("67705cf1ba1ce25d26651ab7");
-console.log(user1);
+        console.log(user1);
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
@@ -181,3 +181,18 @@ console.log(user1);
       res.status(500).json({ error: "Internal server error" });
     }
   };
+
+  export const allPlayer = (request,response,next)=>{
+    User.find({role:"player"})
+    .then(result=>{
+        return response.status(200).json({user: result});
+    }).catch((err)=>{
+      console.log(err)
+        return response.status(500).json({error: "Internal Server Error"});
+    });
+  }
+  
+//---------------------------------------Forget Password--------------------------
+  export const forgetPassword = async (req, res, next)=>{
+
+  }
