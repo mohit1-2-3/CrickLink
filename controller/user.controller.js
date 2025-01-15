@@ -2,11 +2,14 @@ import { validationResult } from "express-validator"
 import { User } from "../model/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { uploadProfilePhoto } from "../config/multerSetup.js";
 
 //---------------------user signUP----------------------------
 export const signUp = async (request,response,next)=>{
     try{  
+    
      const errors =  validationResult(request);
+     console.log(errors);
      if(!errors.isEmpty()){
         console.log(errors);
        return response.status(401).json({error:"Bad request"});
@@ -14,7 +17,8 @@ export const signUp = async (request,response,next)=>{
      let saltKey = bcrypt.genSaltSync(10);
      let encryptedPassword = bcrypt.hashSync(request.body.password,saltKey);
      request.body.password = encryptedPassword;
-     
+     console.log("===============================");
+     console.log(request.body);
      let user = await User.create(request.body);  
      return response.status(201).json({message: "Sign up success",user});
     }
@@ -52,8 +56,9 @@ export const signUp = async (request,response,next)=>{
 
    export const updateProfile = async (req, res) => {
     const { userId } = req.params;
-    const { skills, experience, location, profile_photo } = req.body;
-  
+    const { skills, experience, location} = req.body;
+    const profilePhotoUrl = req.file ? `http://localhost:3001/uploads/${req.file.filename}` : null;
+    
     try {
       const user = await User.findByIdAndUpdate(
         userId,
@@ -61,7 +66,7 @@ export const signUp = async (request,response,next)=>{
           "profile.skills": skills,
           "profile.experience": experience,
           "profile.location": location,
-          profile_photo: profile_photo,
+          "profile_photo": profilePhotoUrl,
         },
         { new: true }
       );

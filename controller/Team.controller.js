@@ -1,5 +1,9 @@
+
+
 import { request, response } from "express";
-import {Team }from "../model/Team.model.js";
+import mongoose from "mongoose";
+
+import {Team }from "../model/team.model.js";
 import{ User }from "../model/user.model.js";
 
 // --------------create tem--------------------
@@ -72,3 +76,89 @@ export const getTeam= async (request,response,next)=>{
         response.status(500).json({ message: "Internal Server Error" });
     }
  }
+//  ==========================================================================
+export const teamlist = (request,response,next)=>{
+    Team.find({ $expr: { $lt: [{ $size: "$players" }, 11] } }).populate("captainId", "name")
+    .select("teamName captainId players wins losses")
+    .then(result=>{
+        return response.status(200).json({Team: result});
+    }).catch(err=>{
+        return response.status(500).json({error: "Internal Server Error"});
+    });
+  }  
+
+// ========================================================================
+export const addtoTeamReq = async (req, res, next) => {
+    try {
+      const { playerId, teamId } = req.body;
+  
+      if (!playerId || !teamId) {
+        return res.status(400).json({ message: "Player ID and Team ID are required" });
+      }
+  
+      if (!mongoose.Types.ObjectId.isValid(playerId) || !mongoose.Types.ObjectId.isValid(teamId)) {
+        return res.status(400).json({ message: "Invalid ObjectId format" });
+      }
+  
+const team = await Team.findById(teamId);
+if (!team) {
+  return res.status(404).json({ message: "Team not found" });
+}
+
+const player = await User.findById(playerId);
+if (!player) {
+  return res.status(404).json({ message: "Player not found" });
+}
+
+const notification = {
+  type: "request",
+  message: "Your request to join the team ${team.teamName} is pending.",
+  status: "pending",
+};
+
+player.notifications.push(notification);
+await player.save();
+
+return res.status(200).json({
+  message: "Player's request to join the team ${team.teamName} is pending.",
+  team,
+  player,
+});
+} catch (error) {
+console.error(error);
+return res.status(500).json({ message: "Server error", error });
+}
+};
+
+// =================================================================
+export const reqacceptBYCaptin = async (req, res, next) => {
+    try {
+      const { status, playerId, teamId} = req.body;
+  
+      const player = await User.findById(playerId);
+      const team = await Team.findById(teamId);
+      if (!player) {
+        return res.status(404).json({ message: "Player not found" });
+      }
+  
+      if (!team) {
+        return res.status(404).json({ message: "Team not found" });
+      }
+  
+  
+      const pendingNotification = player.notifications.findOne( (notif) => notif.status === "pending");
+  
+      pendingNotification.status = status;
+      pendingNotification.message = "Player's request to join the team is ${status}";
+       
+      await player.save();
+   
+      team.players.push(playerId);
+      await team.save();
+  
+      return res.status(201).json({message : "player Added Successfully In Team"})
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Server error", error});
+  }
+  };
