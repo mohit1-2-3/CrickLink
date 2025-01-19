@@ -1,12 +1,14 @@
 import { validationResult } from "express-validator"
 import mongoose from "mongoose";
-import {Team} from "../model/Team.model.js";
+import { Team } from "../model/Team.model.js";
 import { User } from "../model/user.model.js";
 import { request, response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+
 // --------------create tem--------------------
+
 export const createTeam = async (request, response, next) => {
     try {
         let result = await Team.create(request.body);
@@ -23,6 +25,7 @@ export const createTeam = async (request, response, next) => {
 
 
 // --------------------view all team---------------------------
+
 export const viewTeam = async (request, response, next) => {
     try {
         const result = await Team.find();
@@ -39,6 +42,7 @@ export const viewTeam = async (request, response, next) => {
 
 
 // -----------------------------view team with id--------------------------
+
 export const getTeam = async (request, response, next) => {
     try {
         let teamId = request.params.teamId;
@@ -55,7 +59,8 @@ export const getTeam = async (request, response, next) => {
 };
 
 
-// -----------------find the player not part of any team------------------------------
+// -----------------find the player not part of any team-----------------------------
+
 export const withoutTeam = async (request, response, next) => {
     try {
 

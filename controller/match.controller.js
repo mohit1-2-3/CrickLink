@@ -3,7 +3,8 @@ import { Match } from "../model/match.model.js";
 import Tournament from "../model/tournament.model.js";
 import {Team} from "../model/Team.model.js";
 
-// ---------------craete catch------------------------------
+// ---------------create match------------------------------
+
 export const createMatches= async (request,response,next)=>{
     req.body.startDate = startDate.split('T')[0];
     req.body.endDate = endDate.split('T')[0];
@@ -23,6 +24,7 @@ catch(err){
 };
 
 // -----------------------view match--------------------------------
+
 export const viewMatches= async (request,response,next)=>{
     try{
         const result= await Match.find()
@@ -39,6 +41,7 @@ export const viewMatches= async (request,response,next)=>{
 
 
 // -------------------view matches with tournament id---------------------
+
 export const tournamentMatch= async (request,response,next)=>{
     try{
         const id=request.params.id;
@@ -61,6 +64,7 @@ export const tournamentMatch= async (request,response,next)=>{
 
 
 // --------------------------update result------------------------------------
+
 export const updateResult= async(request,response,next)=>{
     try{
         let id=request.params.matchId;
