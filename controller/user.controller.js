@@ -53,7 +53,7 @@ export const signUp = async (request,response,next)=>{
        return token; 
     };
 
-//---------------------------------OTP-----------------------------------------------
+    //---------------------------------OTP-----------------------------------------------
 
 
 let otpStore = {};
@@ -87,7 +87,7 @@ export const sendOTPController = async (request, response) => {
 // ------------------ Verify OTP & Update Password API ------------------
 export const updatePasswordWithOTP = async (request, response) => {
   try {
-    const { email, otp, newPassword } = request.body;
+    const { email, otp, newPassword } = request.body;   // otp should be string
 
     // Step 1: Verify OTP
     if (otpStore[email] !== otp) {
@@ -117,8 +117,6 @@ export const updatePasswordWithOTP = async (request, response) => {
     return response.status(500).json({ error: "Internal Server Error" });
   }
 };
-
-
 
 
    // --------------------------profileUpdate---------------------------------------
@@ -160,13 +158,12 @@ export const updatePasswordWithOTP = async (request, response) => {
     try {
       
       const user = await User.findById(userId, "name role profile");
-      const user1 = await User.findById("67705cf1ba1ce25d26651ab7");
-        console.log(user1);
+      // const user1 = await User.findById("67705cf1ba1ce25d26651ab7");
+      //   console.log(user1);
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
-  
-      
+
       res.status(200).json({
         name: user.name,
         role: user.role,
@@ -182,6 +179,7 @@ export const updatePasswordWithOTP = async (request, response) => {
     }
   };
 
+//=============================All Player============================
   export const allPlayer = (request,response,next)=>{
     User.find({role:"player"})
     .then(result=>{
@@ -192,7 +190,3 @@ export const updatePasswordWithOTP = async (request, response) => {
     });
   }
   
-//---------------------------------------Forget Password--------------------------
-  export const forgetPassword = async (req, res, next)=>{
-
-  }

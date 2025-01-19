@@ -1,11 +1,12 @@
 import { request, response } from "express";
 import { Match } from "../model/match.model.js";
 import Tournament from "../model/tournament.model.js";
-import Team from "../model/Team.model.js";
-
+import {Team} from "../model/Team.model.js";
 
 // ---------------craete catch------------------------------
 export const createMatches= async (request,response,next)=>{
+    req.body.startDate = startDate.split('T')[0];
+    req.body.endDate = endDate.split('T')[0];
     try {
         const result=await Match.create(request.body);
         if(result){

@@ -37,9 +37,7 @@ const matchSchema = new mongoose.Schema({
             trim: true,
         }
     }
-},
-
-    { timestamps: true });
+},{ timestamps: true });
 
 export const Match = mongoose.model("match", matchSchema);
 

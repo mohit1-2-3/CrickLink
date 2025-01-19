@@ -1,15 +1,17 @@
 import express from "express";
 import mongoose from "mongoose"
 import bodyParser from "body-parser";
+import cors from "cors";
+
 
 import UserRouter from "./routes/user.route.js";
 import TeamRouter from "./routes/Team.route.js";
 import PlayerRouter from "./routes/player.route.js";
 import MatchRouter from "./routes/match.route.js";
-
 import TournamentRouter from "./routes/tournament.route.js";
 
 const app = express();
+app.use(cors());
 
 mongoose.connect("mongodb://localhost:27017/cricklink")
   .then(() => {
@@ -26,9 +28,8 @@ mongoose.connect("mongodb://localhost:27017/cricklink")
     app.use("/Tournament", TournamentRouter);
     app.use("/match", MatchRouter)
     app.use("/player", PlayerRouter);
-    app.use("/Tournament", TournamentRouter);
 
-    app.listen(3100, () => {
+    app.listen(3000, () => {
       console.log("Server Started....");
     });
 

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 const tournamentSchema = new mongoose.Schema({
   TournamentName: {
     type: String,
@@ -21,7 +22,7 @@ const tournamentSchema = new mongoose.Schema({
     {
       matchId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Match',
+        ref: 'match',
       },
     }
   ],

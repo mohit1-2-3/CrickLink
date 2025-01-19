@@ -1,7 +1,7 @@
 import { validationResult } from "express-validator"
-
+import mongoose from "mongoose";
 import {Team} from "../model/Team.model.js";
-import{ User }from "../model/user.model.js";
+import { User } from "../model/user.model.js";
 import { request, response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -69,9 +69,9 @@ export const withoutTeam = async (request, response, next) => {
             _id: { $nin: playersInTeams, }, role: "player"
         });
 
-        response.status(200).json(playersWithoutTeam);
+        return response.status(200).json(playersWithoutTeam);
     } catch (error) {
         console.error("Error fetching players without a team:", error);
-        response.status(500).json({ message: "Internal Server Error" });
+        return response.status(500).json({ message: "Internal Server Error" });
     }
 }
