@@ -1,36 +1,21 @@
-import { request, response } from "express";
-//import Team  from "../model/Team.model.js";
-import { User } from "../model/user.model.js";
 import { validationResult } from "express-validator"
+
+import mongoose from "mongoose";
+import { Team } from "../model/Team.model.js";
+import { User } from "../model/user.model.js";
+import { request, response } from "express";
+
 import Team from "../model/Team.model.js";
 //import{ User }from "../model/user.model.js";
 // import { request, response } from "express";
+
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
 
-// export const createTeam= async (req, res) => {
-//   const { teamName, captainId } = req.body;
-
-//   try {
-//     const newTeam = new Team({ teamName, captainId });
-//     await newTeam.save();
-//     res.status(201).json({ message: "Team created successfully", team: newTeam });
-//   } catch (error) {
-//     res.status(500).json({ message: "Error creating team", error: error.message });
-//   }
-// };
-
-
-//==============================================
-
-// import { request, response } from "express";
-// import {Team }from "../model/Team.model.js";
-// import{ User }from "../model/user.model.js";
-
-
 // --------------create tem--------------------
+
 export const createTeam = async (request, response, next) => {
     try {
         const { teamName, username } = request.body;
@@ -60,6 +45,7 @@ export const createTeam = async (request, response, next) => {
 
 
 // --------------------view all team---------------------------
+
 export const viewTeam = async (request, response, next) => {
     try {
     const result = await Team.find().populate("captainId", "name") .populate("players", "name");
@@ -78,6 +64,7 @@ export const viewTeam = async (request, response, next) => {
 
 
 // -----------------------------view team with id--------------------------
+
 export const getTeam = async (request, response, next) => {
     try {
         let teamId = request.params.teamId;
@@ -94,7 +81,8 @@ export const getTeam = async (request, response, next) => {
 };
 
 
-// -----------------find the player not part of any team------------------------------
+// -----------------find the player not part of any team-----------------------------
+
 export const withoutTeam = async (request, response, next) => {
     try {
 
@@ -108,12 +96,13 @@ export const withoutTeam = async (request, response, next) => {
             _id: { $nin: playersInTeams, }, role: "player"
         });
 
-        response.status(200).json(playersWithoutTeam);
+        return response.status(200).json(playersWithoutTeam);
     } catch (error) {
         console.error("Error fetching players without a team:", error);
-        response.status(500).json({ message: "Internal Server Error" });
+        return response.status(500).json({ message: "Internal Server Error" });
     }
 }
+
 
 //---request by player to team----
 // export const addtoTeamReq = async (req, res, next) => {
@@ -346,3 +335,4 @@ export const getNotification = async (req, res, next) => {
         return res.status(500).json({error : "Internal Server Error",error})
 }
 }
+

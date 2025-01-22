@@ -3,15 +3,15 @@ import nodemailer from 'nodemailer';
 const mailer = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'mohitvarma2022@gmail.com', // Aap apna email daalein
-    pass: 'axqs iowy tzcz isdy', // Aap apna password ya app password daalein
+    user: 'kirtijhala1110@gmail.com', // Aap apna email daalein
+    pass: 'scjq nhmc iyqo izno', // Aap apna password ya app password daalein
   },
 });
 
 // Function to send OTP
 const sendOTP = (email, otp) => {
   const mailDetails = {
-    from: 'mohitvarma2022@gmail.com',
+    from: 'kirtijhala1110@gmail.com',
     to: email,
     subject: 'Password Reset OTP',
     text: `Your OTP is: ${otp}`,
