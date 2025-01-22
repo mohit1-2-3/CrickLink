@@ -1,5 +1,15 @@
 import mongoose from "mongoose";
-//user_id: { type: String, unique: true, required: true },
+
+const notificationSchema = new mongoose.Schema({
+  type: {type: String, required: true },
+  receiverId : {type: mongoose.Schema.Types.ObjectId, ref: "user" },
+  senderId : {type: mongoose.Schema.Types.ObjectId, ref: "user"},
+  message: { type: String, required: true},
+  status: {type: String, enum: ["pending", "accepted", "rejected"],
+  default:"pending"},
+  });
+
+
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true }, 
@@ -12,7 +22,6 @@ const userSchema = new mongoose.Schema({
       location: { type: String }, 
     },
     profile_photo: { type: String }, 
-    //notifications: [notificationSchema], 
+    notifications: [notificationSchema], 
   });
   export const User = mongoose.model("user",userSchema);
-  

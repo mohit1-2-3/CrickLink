@@ -11,4 +11,8 @@ router.get("/tournament/:tournamentId",tournamentMatch);
 
 router.patch("/result/:matchId",updateResult);
 
+// router.get("/schedule/:tournamentId",matchSchedule)
+
+
+
 export default router;

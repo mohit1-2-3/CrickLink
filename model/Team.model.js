@@ -5,9 +5,9 @@ const teamSchema = new mongoose.Schema({
     type: String, required: true
   },
   captainId:
-    { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
   players: [{
-    type: mongoose.Schema.Types.ObjectId, ref: "User"
+    type: mongoose.Schema.Types.ObjectId, ref: "user"
   }],
   wins:
     { type: Number, default: 0 },
@@ -15,5 +15,6 @@ const teamSchema = new mongoose.Schema({
     { type: Number, default: 0 },
 });
 
-const Team = mongoose.model("Team", teamSchema);
+ const Team = mongoose.model("Team", teamSchema);
 export default Team;
+
