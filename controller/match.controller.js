@@ -1,6 +1,7 @@
 import { request, response } from "express";
 import { Match } from "../model/match.model.js";
-import { Tournament } from "../model/tournament.model.js";
+import Tournament from "../model/tournament.model.js";
+import Team from "../model/Team.model.js";
 
 
 // ---------------craete catch------------------------------
@@ -23,7 +24,10 @@ catch(err){
 // -----------------------view match--------------------------------
 export const viewMatches= async (request,response,next)=>{
     try{
-        const result= await Match.find();
+        const result= await Match.find()
+        .populate("tournamentId","TournamentName")
+        .populate("team1","teamName")
+        .populate("team2","teamName");
         return response.status(200).json({Match:result});
     }
     catch(err){
@@ -37,7 +41,11 @@ export const viewMatches= async (request,response,next)=>{
 export const tournamentMatch= async (request,response,next)=>{
     try{
         const id=request.params.id;
-        const result=await Match.findOne({id});
+        const result=await Match.findOne({id})
+        .populate("tournamentId","TournamentName")
+        .populate("team1","teamName")
+        .populate("team2","teamName");
+        
         console.log(result);
         if(result){
             return response.status(200).json({Match:result});
@@ -54,7 +62,7 @@ export const tournamentMatch= async (request,response,next)=>{
 // --------------------------update result------------------------------------
 export const updateResult= async(request,response,next)=>{
     try{
-        let id=request.params.id;
+        let id=request.params.matchId;
         let {winnerId,score}= request.body;
         let result =await Match.updateOne({id},{$set:{"result.winner":winnerId,"result.score":score}});
         if(result){
@@ -65,38 +73,4 @@ export const updateResult= async(request,response,next)=>{
     catch(err){
         return response.status(500).json({error:"internal server error"});
     }
-};
-
-// ==========================================================================
-
-
-
-export const matchSchedule= async (req, res) => {
-    try {
-        const {tournamentId }= req.params;
-        console.log(tournamentId);
-
-      
-        const tournament = await Tournament.findById(tournamentId)
-            .populate({
-                path: 'schedule.matchId', 
-                model: 'match',          
-            });
-            console.log(tournament)
-
-        if (!tournament) {
-            return res.status(404).json({ message: 'Tournament not found' });
-        }
-
-        res.status(200).json(tournament);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal Server Error', error: error.message });
-    }
-};
-
-
-
-
-// ==============================================================================
-
+}
