@@ -2,8 +2,10 @@ import mongoose from "mongoose";
 
 const notificationSchema = new mongoose.Schema({
   type: {type: String, required: true },
+
   receiverId : {type: mongoose.Schema.Types.ObjectId, ref: "User" },
   senderId : {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+
   message: { type: String, required: true},
   status: {type: String, enum: ["pending", "accepted", "rejected"],
   default:"pending"},
@@ -25,4 +27,3 @@ const userSchema = new mongoose.Schema({
     notifications: [notificationSchema], 
   });
   export const User = mongoose.model("user",userSchema);
-  

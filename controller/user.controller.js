@@ -4,6 +4,8 @@ import { sendOTP } from '../config/mailer.js';
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { uploadProfilePhoto } from "../config/multerSetup.js";
+import { request } from "http";
+import { response } from "express";
 
 //---------------------user signUP----------------------------
 export const signUp = async (request,response,next)=>{
@@ -189,4 +191,21 @@ export const updatePasswordWithOTP = async (request, response) => {
         return response.status(500).json({error: "Internal Server Error"});
     });
   }
+  // --------------------------------user By Id--------------------------------
+  
+  export const getUser =async(request,response,next)=>{
+    try {
+      const user = await User.findById(request.params.id);
+      if (!user) {
+        return response.status(404).json({ error: 'User not found' });
+      }
+      console.log(user)
+      response.json({ user });
+    } 
+    catch (error) {
+      console.error('Error fetching user:', error);
+      response.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+  
   
