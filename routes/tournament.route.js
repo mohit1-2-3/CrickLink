@@ -8,7 +8,8 @@ router.post("/createTournamentReq", createTournamentReq);
 router.get("/tournamentList", tournamentList);
 router.get("/tournamentById/:id", tournamentById);
 router.delete("/deleteTournament/:id", deleteTournament);
-router.patch("/updateTornament/:id", updateTornamentSchedule);
+router.patch("/updateTournament/:id", updateTornamentSchedule);
+// router.patch("/tournamentStatus", tournamentStatus);
 router.patch("/addTeam/:id",
     body("name","team name is required").notEmpty(),
     addTeam);

@@ -1,8 +1,8 @@
 import express from "express";
 
-import { signUp, signIn, updateProfile, viewProfile, sendOTPController, updatePasswordWithOTP, allPlayer } from "../controller/user.controller.js";
+import { signUp, signIn, updateProfile, viewProfile, sendOTPController, updatePasswordWithOTP, allPlayer, userDetails } from "../controller/user.controller.js";
 import { getNotification } from "../controller/notification.controller.js"
-import { signUp, signIn, updateProfile, viewProfile, allPlayer, sendOTPController, updatePasswordWithOTP } from "../controller/user.controller.js";
+// import { signUp, signIn, updateProfile, viewProfile, allPlayer, sendOTPController, updatePasswordWithOTP } from "../controller/user.controller.js";
 import { body } from "express-validator";
 import { uploadProfilePhoto } from "../config/multerSetup.js";
 
@@ -13,7 +13,7 @@ router.post("/signup",
     body("email", "Invalid email id").isEmail(),
     body("email", "Email id is required").notEmpty(),
     body("password", "password is required").notEmpty(),
-    body("contect", "contect is required").notEmpty(), signUp);
+    body("contact", "contact is required").notEmpty(), signUp);
 
 router.post("/signin", signIn);
 
@@ -24,5 +24,7 @@ router.get("/notification/:userId", getNotification);
 
 router.post("/sendOTP", sendOTPController)
 router.post("/updatePassword", updatePasswordWithOTP);
+router.get("/detail/:userId", userDetails);
+
 
 export default router;

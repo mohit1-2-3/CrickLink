@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true }, 
     password: { type: String, required: true }, 
-    contect:{ type: String, required: true },           
+    contact:{ type: String, required: true },           
     role: { type: String, enum: ["player", "captain", "organizer"], default: "player"}, 
     profile: {
       skills: { type: String }, 

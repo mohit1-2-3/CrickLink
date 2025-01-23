@@ -15,7 +15,7 @@ export const reqAcceptance = async (req, res, next) => {
         const player = await User.findById(playerId);
         const team = await Team.findById(teamId);
         const captain = await User.findById({_id: team.captainId});
-        const pendingNotification = player.notifications.find((notif) => notif.status === "pending");
+        // const pendingNotification = player.notifications.find((notif) => notif.status === "pending");
         const reqStatusP = {
             type : `Request ${statusR}`,
             receiverId : team.captainId,

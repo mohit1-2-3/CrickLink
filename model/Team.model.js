@@ -5,9 +5,9 @@ const teamSchema = new mongoose.Schema({
     type: String, required: true
   },
   captainId:
-    { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
   players: [{
-    type: mongoose.Schema.Types.ObjectId, ref: "User"
+    type: mongoose.Schema.Types.ObjectId, ref: "user"
   }],
   wins:
     { type: Number, default: 0 },

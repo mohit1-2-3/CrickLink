@@ -26,6 +26,11 @@ const tournamentSchema = new mongoose.Schema({
       },
     }
   ],
+  // venue:{
+  //   type: String,
+  //   required: true,
+  //   default: null
+  // },
   startDate: {
     type: Date,
     required: true,
@@ -34,6 +39,15 @@ const tournamentSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  entry_fees :{
+    type: Number,
+    default: 0
+  },
+  status:{
+    type: String,
+    enum: ["active","inactive"],
+    default: "active"
+  }
 });
 
 const Tournament = mongoose.model('Tournament', tournamentSchema);

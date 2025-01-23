@@ -28,7 +28,9 @@ export const createTeam = async (request, response, next) => {
 
 export const viewTeam = async (request, response, next) => {
     try {
-        const result = await Team.find();
+        const result = await Team.find()
+        .populate("captainId", "name")
+        .populate("players");;
         console.log(result);
         if (result) {
             return response.status(200).json({ Team: result });
@@ -46,17 +48,23 @@ export const viewTeam = async (request, response, next) => {
 export const getTeam = async (request, response, next) => {
     try {
         let teamId = request.params.teamId;
-        const result = await Team.findOne({ _id: teamId });
+        const result = await Team.findOne({ _id: teamId })
+            .populate("captainId", "name")
+            .populate("players");
+
         console.log(result);
+
         if (result) {
             return response.status(200).json({ Team: result });
         }
-        return response.status(401).json({ error: "bad error" });
-    }
-    catch (err) {
+
+        return response.status(404).json({ error: "Team not found" });
+    } catch (err) {
+        console.error(err);
         return response.status(500).json({ error: "internal server error" });
     }
 };
+
 
 
 // -----------------find the player not part of any team-----------------------------
