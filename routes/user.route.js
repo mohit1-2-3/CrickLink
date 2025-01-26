@@ -13,7 +13,8 @@ router.post("/signup",
     body("email", "Invalid email id").isEmail(),
     body("email", "Email id is required").notEmpty(),
     body("password", "password is required").notEmpty(),
-    body("contact", "contact is required").notEmpty(), signUp);
+    body("contact", "contact is required").notEmpty(),
+     signUp);
 
 router.post("/signin", signIn);
 

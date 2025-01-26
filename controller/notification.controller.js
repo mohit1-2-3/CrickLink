@@ -14,6 +14,8 @@ export const reqAcceptance = async (req, res, next) => {
 
         const player = await User.findById(playerId);
         const team = await Team.findById(teamId);
+        console.log("========================================");
+        console.log("team : "+ team);
         const captain = await User.findById({_id: team.captainId});
         // const pendingNotification = player.notifications.find((notif) => notif.status === "pending");
         const reqStatusP = {
@@ -56,7 +58,7 @@ export const addtoTeamReq = async (req, res, next) => {
 
         let team = await Team.findOne({ captainId : captainId });
         if (!team)
-            return res.status(404).json({ message: "Team not found. Create yur team" });
+            return res.status(404).json({ message: "Team not found. Create your team" });
 
         let teamId = team._id;
         if (!mongoose.Types.ObjectId.isValid(playerId) || !mongoose.Types.ObjectId.isValid(teamId)) {
@@ -96,7 +98,9 @@ export const addtoTeamReq = async (req, res, next) => {
 export const getNotification = async (req, res, next) => {
     let {userId} = req.params;
     try{
-        const user = await User.findById({_id : userId});
+        const user = await User.findById({_id : userId})
+        .populate({ path: "notifications.receiverId", select: "name" })
+        .populate({ path: "notifications.senderId", select: "name" });
         if(!user)
             console.log("no user exist");
         if(!user.notifications){

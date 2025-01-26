@@ -92,7 +92,7 @@ export const tournamentById = async (req, response, next) => {
   try {
     const data = await Tournament.find({ $or: [{ _id: id }, { organizerId: id }] })
       .populate("organizerId", "name")
-      .populate({ path: "teams.teamId", select: "teamName " })
+      .populate({ path: "teams.teamId", select: "teamName" })
       .populate({
         path: "schedule.matchId", select: "matchId date venue result",
         populate: [

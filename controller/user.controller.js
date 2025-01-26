@@ -124,7 +124,7 @@ export const updatePasswordWithOTP = async (request, response) => {
 export const updateProfile = async (req, res) => {
   const { userId } = req.params;
   const { skills, experience, location } = req.body;
-  const profilePhotoUrl = req.file ? `http://localhost:3001/uploads/${req.file.filename}` : null;
+  const profilePhotoUrl = req.file ? `http://localhost:3000/uploads/${req.file.filename}` : null;
 
   try {
     const user = await User.findByIdAndUpdate(
@@ -156,10 +156,9 @@ export const viewProfile = async (req, res) => {
   const { userId } = req.params;
 
   try {
-
-    const user = await User.findById(userId, "name role profile");
-    // const user1 = await User.findById("67705cf1ba1ce25d26651ab7");
-    //   console.log(user1);
+    // Fetch user details including profile_photo
+    const user = await User.findById(userId, "name role profile profile_photo");
+    
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -172,12 +171,14 @@ export const viewProfile = async (req, res) => {
         experience: user.profile.experience,
         location: user.profile.location,
       },
+      profile_photo: user.profile_photo, // Include profile_photo in the response
     });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
 
 //=============================All Player============================
 export const allPlayer = (request, response, next) => {
